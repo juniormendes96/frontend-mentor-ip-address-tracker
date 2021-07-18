@@ -7,7 +7,10 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['Rubik', ...defaultTheme.fontFamily.sans]
-      }
+      },
+      backgroundImage: theme => ({
+        'header-pattern': "url('/images/header-pattern.png')"
+      })
     }
   },
   variants: {
