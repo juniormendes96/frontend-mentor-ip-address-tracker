@@ -1,8 +1,14 @@
 import Head from 'next/head';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
+
 import arrowIcon from '../assets/icons/icon-arrow.svg';
 
 export default function Home() {
+  const MapWithNoSSR = dynamic(() => import('../components/map'), {
+    ssr: false
+  });
+
   return (
     <>
       <Head>
@@ -23,7 +29,7 @@ export default function Home() {
                 <Image src={arrowIcon} alt="Arrow icon" />
               </button>
             </form>
-            <div className="w-full sm:w-2/3 lg:w-max mx-auto rounded-xl bg-white shadow-2xl grid lg:grid-cols-4 lg:divide-x py-8">
+            <div className="w-full sm:w-2/3 lg:w-max mx-auto rounded-xl bg-white shadow-2xl grid lg:grid-cols-4 lg:divide-x py-8 z-500">
               <section className="flex flex-col w-full lg:w-56 lg:text-left text-center lg:px-8 mb-5 lg:mb-0">
                 <h3 className="font-bold tracking-widest text-xs text-gray-500 mb-2">IP ADDRESS</h3>
                 <span className="font-medium text-xl">192.212.174.101</span>
@@ -43,7 +49,9 @@ export default function Home() {
             </div>
           </div>
         </header>
-        <div className="bg-gray-300 flex-grow"></div>
+        <div className="flex-grow">
+          <MapWithNoSSR />
+        </div>
       </main>
     </>
   );

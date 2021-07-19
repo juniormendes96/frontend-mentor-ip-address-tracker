@@ -10,7 +10,10 @@ module.exports = {
       },
       backgroundImage: theme => ({
         'header-pattern': "url('/images/header-pattern.png')"
-      })
+      }),
+      zIndex: {
+        500: '500'
+      }
     }
   },
   variants: {
