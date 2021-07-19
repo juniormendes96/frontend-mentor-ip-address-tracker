@@ -1,11 +1,27 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
+import { GetServerSideProps } from 'next';
+import { ComponentType, useState } from 'react';
 
 import arrowIcon from '../assets/icons/icon-arrow.svg';
+import { GeolocationInfo } from '../models/geolocation-info';
+import { Props as MapProps } from '../components/map';
 
-export default function Home() {
-  const MapWithNoSSR = dynamic(() => import('../components/map'), {
+type Props = {
+  initialGeolocationInfo: GeolocationInfo;
+};
+
+const Home: React.FC<Props> = ({ initialGeolocationInfo }) => {
+  const [info, setInfo] = useState<GeolocationInfo>(initialGeolocationInfo);
+
+  const {
+    ip,
+    isp,
+    location: { city, region, postalCode, timezone, lng, lat }
+  } = info;
+
+  const MapWithNoSSR: ComponentType<MapProps> = dynamic(() => import('../components/map'), {
     ssr: false
   });
 
@@ -32,27 +48,53 @@ export default function Home() {
             <div className="w-full sm:w-2/3 lg:w-max mx-auto rounded-xl bg-white shadow-2xl grid lg:grid-cols-4 lg:divide-x py-8 z-500">
               <section className="flex flex-col w-full lg:w-56 lg:text-left text-center lg:px-8 mb-5 lg:mb-0">
                 <h3 className="font-bold tracking-widest text-xs text-gray-500 mb-2">IP ADDRESS</h3>
-                <span className="font-medium text-xl">192.212.174.101</span>
+                <span className="font-medium text-xl">{ip}</span>
               </section>
               <section className="flex flex-col w-full lg:w-56 lg:text-left text-center lg:px-8 mb-5 lg:mb-0">
                 <h3 className="font-bold tracking-widest text-xs text-gray-500 mb-2">LOCATION</h3>
-                <span className="font-medium text-xl">Brooklyn, NY 10001</span>
+                <span className="font-medium text-xl">
+                  {city}, {region} {postalCode}
+                </span>
               </section>
               <section className="flex flex-col w-full lg:w-56 lg:text-left text-center lg:px-8 mb-5 lg:mb-0">
                 <h3 className="font-bold tracking-widest text-xs text-gray-500 mb-2">TIMEZONE</h3>
-                <span className="font-medium text-xl">UTC -05:00</span>
+                <span className="font-medium text-xl">{timezone}</span>
               </section>
               <section className="flex flex-col w-full lg:w-56 lg:text-left text-center lg:px-8">
                 <h3 className="font-bold tracking-widest text-xs text-gray-500 mb-2">ISP</h3>
-                <span className="font-medium text-xl">SpaceX Starlink</span>
+                <span className="font-medium text-xl">{isp}</span>
               </section>
             </div>
           </div>
         </header>
         <div className="flex-grow">
-          <MapWithNoSSR />
+          <MapWithNoSSR lng={lng} lat={lat} />
         </div>
       </main>
     </>
   );
-}
+};
+
+export default Home;
+
+export const getServerSideProps: GetServerSideProps<Props> = async () => {
+  const initialGeolocationInfo: GeolocationInfo = {
+    ip: '142.250.72.132',
+    isp: 'Google LLC',
+    location: {
+      country: 'US',
+      region: 'California',
+      city: 'Los Angeles',
+      lat: 34.05223,
+      lng: -118.24368,
+      postalCode: '90001',
+      timezone: '-07:00'
+    }
+  };
+
+  return {
+    props: {
+      initialGeolocationInfo
+    }
+  };
+};
