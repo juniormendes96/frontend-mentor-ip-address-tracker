@@ -2,11 +2,15 @@ import Head from 'next/head';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { GetServerSideProps } from 'next';
-import { ComponentType, useState } from 'react';
+import { ComponentType, FormEvent, useRef, useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 
 import arrowIcon from '../assets/icons/icon-arrow.svg';
 import { GeolocationInfo } from '../models/geolocation-info';
 import { Props as MapProps } from '../components/map';
+import isValidDomain from '../validators/domain-validator';
+import { getGeolocationInfoByDomain, getGeolocationInfoByIpAddress } from '../services/geolocation';
+import isValidIpAddress from '../validators/ip-address-validator';
 
 type Props = {
   initialGeolocationInfo: GeolocationInfo;
@@ -14,6 +18,8 @@ type Props = {
 
 const Home: React.FC<Props> = ({ initialGeolocationInfo }) => {
   const [info, setInfo] = useState<GeolocationInfo>(initialGeolocationInfo);
+  const formRef = useRef<HTMLFormElement>();
+  const inputRef = useRef<HTMLInputElement>();
 
   const {
     ip,
@@ -25,6 +31,26 @@ const Home: React.FC<Props> = ({ initialGeolocationInfo }) => {
     ssr: false
   });
 
+  const onSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
+    event.preventDefault();
+
+    try {
+      const { value } = inputRef.current;
+
+      if (isValidDomain(value)) {
+        setInfo(await getGeolocationInfoByDomain(value));
+      } else if (isValidIpAddress(value)) {
+        setInfo(await getGeolocationInfoByIpAddress(value));
+      } else {
+        throw new Error('Please enter a valid domain or IP address');
+      }
+
+      formRef.current.reset();
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   return (
     <>
       <Head>
@@ -34,14 +60,15 @@ const Home: React.FC<Props> = ({ initialGeolocationInfo }) => {
         <header className="h-72 bg-header-pattern bg-cover bg-no-repeat bg-center relative">
           <div className="w-11/12 h-full flex flex-col items-center mt-7 mx-auto">
             <h1 className="text-white text-3xl md:text-4xl font-medium mb-6 lg:mb-8">IP Address Tracker</h1>
-            <form className="flex w-full sm:w-2/3 lg:w-1/3 mb-6 lg:mb-14">
+            <form className="flex w-full sm:w-2/3 lg:w-1/3 mb-6 lg:mb-14" onSubmit={onSubmit} ref={formRef}>
               <input
                 type="text"
                 autoComplete="off"
                 className="py-4 px-5 rounded-l-xl outline-none flex-grow"
                 placeholder="Search for any IP address or domain"
+                ref={inputRef}
               />
-              <button type="button" className="bg-black py-4 px-5 rounded-r-xl hover:bg-gray-800">
+              <button className="bg-black py-4 px-5 rounded-r-xl hover:bg-gray-800">
                 <Image src={arrowIcon} alt="Arrow icon" />
               </button>
             </form>
@@ -70,6 +97,17 @@ const Home: React.FC<Props> = ({ initialGeolocationInfo }) => {
         <div className="flex-grow">
           <MapWithNoSSR lng={lng} lat={lat} />
         </div>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </main>
     </>
   );
