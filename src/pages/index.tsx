@@ -16,8 +16,13 @@ type Props = {
   initialGeolocationInfo: GeolocationInfo;
 };
 
+const MapWithNoSSR: ComponentType<MapProps> = dynamic(() => import('../components/map'), {
+  ssr: false
+});
+
 const Home: React.FC<Props> = ({ initialGeolocationInfo }) => {
   const [info, setInfo] = useState<GeolocationInfo>(initialGeolocationInfo);
+  const [loading, setLoading] = useState<boolean>(false);
   const formRef = useRef<HTMLFormElement>();
   const inputRef = useRef<HTMLInputElement>();
 
@@ -27,15 +32,16 @@ const Home: React.FC<Props> = ({ initialGeolocationInfo }) => {
     location: { city, region, postalCode, timezone, lng, lat }
   } = info;
 
-  const MapWithNoSSR: ComponentType<MapProps> = dynamic(() => import('../components/map'), {
-    ssr: false
-  });
-
   const onSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
 
+    if (loading) {
+      return;
+    }
+
     try {
       const { value } = inputRef.current;
+      setLoading(true);
 
       if (isValidDomain(value)) {
         setInfo(await getGeolocationInfoByDomain(value));
@@ -48,6 +54,8 @@ const Home: React.FC<Props> = ({ initialGeolocationInfo }) => {
       formRef.current.reset();
     } catch (error) {
       toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
