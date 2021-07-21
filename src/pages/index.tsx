@@ -23,7 +23,7 @@ const MapWithNoSSR: ComponentType<MapProps> = dynamic(() => import('../component
 const Home: React.FC<Props> = ({ initialGeolocationInfo }) => {
   const [info, setInfo] = useState(initialGeolocationInfo);
   const [text, setText] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     ip,
@@ -34,12 +34,12 @@ const Home: React.FC<Props> = ({ initialGeolocationInfo }) => {
   const onSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
 
-    if (loading) {
+    if (isLoading) {
       return;
     }
 
     try {
-      setLoading(true);
+      setIsLoading(true);
 
       if (isValidDomain(text)) {
         setInfo(await getGeolocationInfoByDomain(text));
@@ -53,7 +53,7 @@ const Home: React.FC<Props> = ({ initialGeolocationInfo }) => {
     } catch (error) {
       toast.error(error.message);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
