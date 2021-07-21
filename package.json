@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest src/*"
+    "test": "jest"
   },
   "dependencies": {
     "leaflet": "^1.7.1",
