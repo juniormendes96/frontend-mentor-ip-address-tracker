@@ -3,7 +3,7 @@ const regExp = new RegExp(
 );
 
 const isValidIpAddress = (ipAddress: string): boolean => {
-  return regExp.test(ipAddress);
+  return !!ipAddress && regExp.test(ipAddress);
 };
 
 export default isValidIpAddress;

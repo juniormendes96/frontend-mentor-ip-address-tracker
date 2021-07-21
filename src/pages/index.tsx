@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { GetServerSideProps } from 'next';
-import { ComponentType, FormEvent, useRef, useState } from 'react';
+import { ComponentType, FormEvent, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 
 import arrowIcon from '../assets/icons/icon-arrow.svg';
@@ -21,10 +21,9 @@ const MapWithNoSSR: ComponentType<MapProps> = dynamic(() => import('../component
 });
 
 const Home: React.FC<Props> = ({ initialGeolocationInfo }) => {
-  const [info, setInfo] = useState<GeolocationInfo>(initialGeolocationInfo);
-  const [loading, setLoading] = useState<boolean>(false);
-  const formRef = useRef<HTMLFormElement>();
-  const inputRef = useRef<HTMLInputElement>();
+  const [info, setInfo] = useState(initialGeolocationInfo);
+  const [text, setText] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const {
     ip,
@@ -40,18 +39,17 @@ const Home: React.FC<Props> = ({ initialGeolocationInfo }) => {
     }
 
     try {
-      const { value } = inputRef.current;
       setLoading(true);
 
-      if (isValidDomain(value)) {
-        setInfo(await getGeolocationInfoByDomain(value));
-      } else if (isValidIpAddress(value)) {
-        setInfo(await getGeolocationInfoByIpAddress(value));
+      if (isValidDomain(text)) {
+        setInfo(await getGeolocationInfoByDomain(text));
+      } else if (isValidIpAddress(text)) {
+        setInfo(await getGeolocationInfoByIpAddress(text));
       } else {
         throw new Error('Please enter a valid domain or IP address');
       }
 
-      formRef.current.reset();
+      setText('');
     } catch (error) {
       toast.error(error.message);
     } finally {
@@ -68,13 +66,14 @@ const Home: React.FC<Props> = ({ initialGeolocationInfo }) => {
         <header className="h-72 bg-header-pattern bg-cover bg-no-repeat bg-center relative">
           <div className="w-11/12 h-full flex flex-col items-center mt-7 mx-auto">
             <h1 className="text-white text-3xl md:text-4xl font-medium mb-6 lg:mb-8">IP Address Tracker</h1>
-            <form className="flex w-full sm:w-2/3 lg:w-1/3 mb-6 lg:mb-14" onSubmit={onSubmit} ref={formRef}>
+            <form className="flex w-full sm:w-2/3 lg:w-1/3 mb-6 lg:mb-14" onSubmit={onSubmit}>
               <input
                 type="text"
                 autoComplete="off"
                 className="py-4 px-5 rounded-l-xl outline-none flex-grow"
                 placeholder="Search for any IP address or domain"
-                ref={inputRef}
+                value={text}
+                onChange={event => setText(event.target.value)}
               />
               <button className="bg-black py-4 px-5 rounded-r-xl hover:bg-gray-800">
                 <Image src={arrowIcon} alt="Arrow icon" />
