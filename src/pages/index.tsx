@@ -60,7 +60,7 @@ const Home: React.FC<Props> = ({ initialGeolocationInfo }) => {
   return (
     <>
       <Head>
-        <title>Create Next App</title>
+        <title>IP Address Tracker</title>
       </Head>
       <main className="h-screen w-screen flex flex-col">
         <header className="h-72 bg-header-pattern bg-cover bg-no-repeat bg-center relative">
