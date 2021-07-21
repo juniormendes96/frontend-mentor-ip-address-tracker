@@ -75,7 +75,10 @@ const Home: React.FC<Props> = ({ initialGeolocationInfo }) => {
                 value={text}
                 onChange={event => setText(event.target.value)}
               />
-              <button className="bg-black py-4 px-5 rounded-r-xl hover:bg-gray-800">
+              <button
+                className="bg-black py-4 px-5 rounded-r-xl hover:bg-gray-800 disabled:opacity-50 disabled:pointer-events-none"
+                disabled={isLoading}
+              >
                 <Image src={arrowIcon} alt="Arrow icon" />
               </button>
             </form>
