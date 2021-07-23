@@ -1,11 +1,10 @@
 import Head from 'next/head';
-import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import { GetServerSideProps } from 'next';
 import { ComponentType, FormEvent, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
+import { FaChevronRight } from 'react-icons/fa';
 
-import arrowIcon from '../assets/icons/icon-arrow.svg';
 import { GeolocationInfo } from '../models/geolocation-info';
 import { MapProps } from '../components/map';
 import isValidDomain from '../validators/domain-validator';
@@ -79,7 +78,7 @@ const Home: React.FC<Props> = ({ initialGeolocationInfo }) => {
                 className="bg-black py-4 px-5 rounded-r-xl hover:bg-gray-800 disabled:opacity-50 disabled:pointer-events-none"
                 disabled={isLoading}
               >
-                <Image src={arrowIcon} alt="Arrow icon" />
+                <FaChevronRight color="white" title="Search" />
               </button>
             </form>
             <div className="w-full sm:w-2/3 lg:w-max mx-auto rounded-xl bg-white shadow-2xl grid lg:grid-cols-4 lg:divide-x py-6 lg:py-8 z-500">
