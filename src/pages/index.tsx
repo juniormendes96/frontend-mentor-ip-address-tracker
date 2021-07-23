@@ -84,21 +84,25 @@ const Home: React.FC<Props> = ({ initialGeolocationInfo }) => {
             </form>
             <div className="w-full sm:w-2/3 lg:w-max mx-auto rounded-xl bg-white shadow-2xl grid lg:grid-cols-4 lg:divide-x py-6 lg:py-8 z-500">
               <section className="flex flex-col w-full lg:w-64 lg:text-left text-center lg:px-8 mb-5 lg:mb-0">
-                <h3 className="font-bold tracking-widest text-xs text-gray-500 mb-2">IP ADDRESS</h3>
+                <h2 className="font-bold tracking-widest text-xs text-gray-500 mb-2">IP ADDRESS</h2>
                 <span className="font-medium text-xl">{ip}</span>
               </section>
               <section className="flex flex-col w-full lg:w-64 lg:text-left text-center lg:px-8 mb-5 lg:mb-0">
-                <h3 className="font-bold tracking-widest text-xs text-gray-500 mb-2">LOCATION</h3>
+                <h2 className="font-bold tracking-widest text-xs text-gray-500 mb-2">LOCATION</h2>
                 <span className="font-medium text-xl">
-                  {city}, {region} {postalCode}
+                  {city && (
+                    <>
+                      {city}, {region} {postalCode}
+                    </>
+                  )}
                 </span>
               </section>
               <section className="flex flex-col w-full lg:w-64 lg:text-left text-center lg:px-8 mb-5 lg:mb-0">
-                <h3 className="font-bold tracking-widest text-xs text-gray-500 mb-2">TIMEZONE</h3>
+                <h2 className="font-bold tracking-widest text-xs text-gray-500 mb-2">TIMEZONE</h2>
                 <span className="font-medium text-xl">{timezone}</span>
               </section>
               <section className="flex flex-col w-full lg:w-64 lg:text-left text-center lg:px-8">
-                <h3 className="font-bold tracking-widest text-xs text-gray-500 mb-2">ISP</h3>
+                <h2 className="font-bold tracking-widest text-xs text-gray-500 mb-2">ISP</h2>
                 <span className="font-medium text-xl">{isp}</span>
               </section>
             </div>
