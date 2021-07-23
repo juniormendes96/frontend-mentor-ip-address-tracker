@@ -65,8 +65,8 @@ const Home: React.FC<Props> = ({ initialGeolocationInfo }) => {
       <main className="h-screen w-screen flex flex-col">
         <header className="h-72 bg-header-pattern bg-cover bg-no-repeat bg-center relative">
           <div className="w-11/12 h-full flex flex-col items-center mt-7 mx-auto">
-            <h1 className="text-white text-3xl md:text-4xl font-medium mb-6 lg:mb-8">IP Address Tracker</h1>
-            <form className="flex w-full sm:w-2/3 lg:w-1/3 mb-6 lg:mb-14" onSubmit={onSubmit}>
+            <h1 className="text-white text-3xl md:text-4xl font-medium mb-4 lg:mb-8">IP Address Tracker</h1>
+            <form className="flex w-full sm:w-2/3 lg:w-1/3 mb-5 lg:mb-14" onSubmit={onSubmit}>
               <input
                 type="text"
                 autoComplete="off"
@@ -82,7 +82,7 @@ const Home: React.FC<Props> = ({ initialGeolocationInfo }) => {
                 <Image src={arrowIcon} alt="Arrow icon" />
               </button>
             </form>
-            <div className="w-full sm:w-2/3 lg:w-max mx-auto rounded-xl bg-white shadow-2xl grid lg:grid-cols-4 lg:divide-x py-8 z-500">
+            <div className="w-full sm:w-2/3 lg:w-max mx-auto rounded-xl bg-white shadow-2xl grid lg:grid-cols-4 lg:divide-x py-6 lg:py-8 z-500">
               <section className="flex flex-col w-full lg:w-64 lg:text-left text-center lg:px-8 mb-5 lg:mb-0">
                 <h3 className="font-bold tracking-widest text-xs text-gray-500 mb-2">IP ADDRESS</h3>
                 <span className="font-medium text-xl">{ip}</span>
