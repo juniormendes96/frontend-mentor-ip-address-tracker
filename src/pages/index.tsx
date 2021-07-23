@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { ComponentType, FormEvent, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 
@@ -124,20 +124,28 @@ const Home: React.FC<Props> = ({ initialGeolocationInfo }) => {
 
 export default Home;
 
-export const getServerSideProps: GetServerSideProps<Props> = async () => {
-  const initialGeolocationInfo: GeolocationInfo = {
-    ip: '142.250.72.132',
-    isp: 'Google LLC',
-    location: {
-      country: 'US',
-      region: 'California',
-      city: 'Los Angeles',
-      lat: 34.05223,
-      lng: -118.24368,
-      postalCode: '90001',
-      timezone: '-07:00'
-    }
-  };
+export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => {
+  const ipAddress = (req.headers['x-real-ip'] as string) || '8.8.8.8';
+
+  let initialGeolocationInfo: GeolocationInfo;
+
+  try {
+    initialGeolocationInfo = await getGeolocationInfoByIpAddress(ipAddress);
+  } catch (error) {
+    initialGeolocationInfo = {
+      ip: '142.250.72.132',
+      isp: 'Google LLC',
+      location: {
+        country: 'US',
+        region: 'California',
+        city: 'Los Angeles',
+        lat: 34.05223,
+        lng: -118.24368,
+        postalCode: '90001',
+        timezone: '-07:00'
+      }
+    };
+  }
 
   return {
     props: {
