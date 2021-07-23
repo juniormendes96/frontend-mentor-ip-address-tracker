@@ -7,7 +7,7 @@ import { toast, ToastContainer } from 'react-toastify';
 
 import arrowIcon from '../assets/icons/icon-arrow.svg';
 import { GeolocationInfo } from '../models/geolocation-info';
-import { Props as MapProps } from '../components/map';
+import { MapProps } from '../components/map';
 import isValidDomain from '../validators/domain-validator';
 import { getGeolocationInfoByDomain, getGeolocationInfoByIpAddress } from '../services/geolocation';
 import isValidIpAddress from '../validators/ip-address-validator';
