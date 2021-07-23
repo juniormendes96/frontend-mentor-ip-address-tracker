@@ -24,7 +24,7 @@ Users should be able to:
 ### Links
 
 - [Live site](https://frontend-mentor-ip-address-tracker.vercel.app)
-- [Solution](https://your-solution-url.com)
+- [Solution](https://www.frontendmentor.io/solutions/responsive-app-using-nextjs-and-tailwindcss-pY8BBNEcz)
 
 ## My process
 
