@@ -109,13 +109,12 @@ const Home: React.FC<Props> = ({ initialGeolocationInfo }) => {
         </div>
         <ToastContainer
           position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
+          autoClose={3000}
+          hideProgressBar={true}
           newestOnTop={false}
           closeOnClick
           rtl={false}
           pauseOnFocusLoss
-          draggable
           pauseOnHover
         />
       </main>
